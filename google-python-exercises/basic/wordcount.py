@@ -45,6 +45,49 @@ import sys
 # and builds and returns a word/count dict for it.
 # Then print_words() and print_top() can just call the utility function.
 
+def parsefile(filename):
+  """
+  Helper function to read a file and returns a word/count dictionary for it.
+  All words are parsed to lowercase
+  """
+  word_dict = {}
+  f = open(filename, 'r')
+  for line in f:
+    words = line.split()
+    for word in words:
+      word = word.lower()
+      if not word in word_dict:
+        word_dict[word] = 1
+      else:
+        word_dict[word] += 1
+  f.close()
+  return word_dict
+
+
+def print_words(filename):
+  """
+  function that counts how often each word appears in the text and prints:
+  word1 count1
+  word2 count2
+  ...
+  """
+  word_count = parsefile(filename)
+  words = sorted(word_count.keys())
+  for word in words:
+    print word, word_count[word]
+
+
+def print_top(filename):
+  """
+  prints just the top 20 most common words sorted so the most 
+  common word is first.
+  """
+  word_count = parsefile(filename)
+  sorted_count = sorted(word_count.items(), key=lambda x: x[-1], reverse=True)
+  for word_tuple in sorted_count[:20]:
+    print word_tuple[0], word_tuple[1]
+
+    
 ###
 
 # This basic command line argument parsing code is provided and
