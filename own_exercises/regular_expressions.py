@@ -57,4 +57,11 @@ m.group(2)
 'gmail.com'
 
 # find all matches
+re.findall(r'[\w.]+@[\w.]+', 'blah nick.p@gmail.com yatta foo@bar')
+['nick.p@gmail.com', 'foo@bar']
+
 re.findall(r'([\w.]+)@([\w.]+)', 'blah nick.p@gmail.com yatta foo@bar')
+[('nick.p', 'gmail.com'), ('foo', 'bar')]
+
+# run: dir(re) -- this gives a list of flags which can be used just add it as a third argument
+re.findall(r'([\w.]+)@([\w.]+)', 'blah nick.p@gmail.com yatta foo@bar', IGNORECASE)
