@@ -41,7 +41,40 @@ def extract_names(filename):
   ['2006', 'Aaliyah 91', Aaron 57', 'Abagail 895', ' ...]
   """
   # +++your code here+++
-  return
+  names = []
+
+  # Open, read and close the file
+  f = open(filename, 'r')
+  text = f.read()
+  f.close()
+
+  # Get the year
+  year_match = re.search(r'Popularity\sin\s(\d\d\d\d)', text)
+  if not year_match:
+    sys.stderr.write("Year not found!\n")
+    sys.exit(1)
+  year = year_match.group(1)
+  names.append(year)
+
+  # Get the names and rank numbers store it in a tuple
+  tup_names = re.findall(r'<td>(\d+)</td><td>(\w+)</td><td>(\w+)</td>', text)
+
+  # Store the names as keys and rank as values in a dict, do not add duplicates
+  names_to_rank = {}
+  for rank, boyname, girlname in tup_names:
+    if boyname not in names_to_rank:
+      names_to_rank[boyname] = rank
+    if girlname not in names_to_rank:
+      names_to_rank[girlname] = rank
+
+  # Build sorted result list
+  sorted_names = sorted(names_to_rank)
+  for name in sorted_names:
+    names.append(name + " " + names_to_rank[name])
+
+  return names
+  sys.exit()
+
 
 
 def main():
@@ -63,6 +96,17 @@ def main():
   # +++your code here+++
   # For each filename, get the names, then either print the text output
   # or write it to a summary file
+  for filename in args:
+    names = extract_names(filename)
+
+    text = '\n'.join(names)
+
+    if summary:
+      summary_f = open(filename + '.summary', 'w')
+      summary_f.write(text + '\n')
+      summary_f.close()
+    else:
+      print text
   
 if __name__ == '__main__':
   main()
